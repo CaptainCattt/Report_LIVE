@@ -298,7 +298,7 @@ if "brand_eval" in st.session_state:
 
     output = io.BytesIO()
     with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
-        st.session_state["brand_eval_1"].to_excel(
+        st.session_state["brand_eval"].to_excel(
             writer, index=False, sheet_name="Report"
         )
     processed_data = output.getvalue()

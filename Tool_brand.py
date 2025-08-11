@@ -54,6 +54,7 @@ with col2:
         type=["xlsx", "xls"],
         key="tiktok_income",
     )
+st.markdown("<br><br>", unsafe_allow_html=True)
 
 # Khởi tạo trạng thái nếu chưa có
 if "processing" not in st.session_state:

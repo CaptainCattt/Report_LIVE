@@ -269,6 +269,10 @@ if process_btn:
 
 
 if "df_result_new" in st.session_state:
+    st.markdown(
+        "<h2 style='text-align: center;'>📊 Kết quả đánh giá các Product Name</h2>",
+        unsafe_allow_html=True,
+    )
     st.dataframe(st.session_state["df_result_new"], use_container_width=True)
     import io
 
@@ -287,6 +291,10 @@ if "df_result_new" in st.session_state:
     )
 
 if "brand_eval" in st.session_state:
+    st.markdown(
+        "<h2 style='text-align: center;'>📊 Kết quả đánh giá các SKU Category</h2>",
+        unsafe_allow_html=True,
+    )
     st.dataframe(st.session_state["brand_eval"], use_container_width=True)
 
     import io

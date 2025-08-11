@@ -214,29 +214,6 @@ def process_tiktok_daily_report(df_brands, df):
     )
 
     brand_eval = (
-        df_result.groupby("Tên sản phẩm")
-        .agg(
-            {
-                "GMV đã ghi nhận": "sum",
-                "Đơn hàng chính": "sum",
-                "GMV mỗi đơn": "mean",
-                "CTR (%)": "mean",
-                "CTOR (%)": "mean",
-                "Tỷ lệ thanh toán (%)": "mean",
-                "Tỷ lệ chuyển đổi giỏ hàng": "mean",
-                "Hiệu quả đơn/view": "mean",
-                "Điểm đánh giá (0-6)": "mean",
-            }
-        )
-        .reset_index()
-    )
-
-    # Gợi ý đánh giá brand
-    brand_eval["Nên tiếp tục collab?"] = brand_eval["Điểm đánh giá (0-6)"].apply(
-        lambda x: "✅ Có" if x >= 3 else "❌ Không"
-    )
-
-    brand_eval_1 = (
         df_result.groupby("SKU Category")
         .agg(
             {
@@ -254,11 +231,16 @@ def process_tiktok_daily_report(df_brands, df):
         .reset_index()
     )
 
-    brand_eval_1["Nên tiếp tục collab?"] = brand_eval_1["Điểm đánh giá (0-6)"].apply(
+    brand_eval["GMV đã ghi nhận"] = brand_eval["GMV đã ghi nhận"].apply(
+        format_vn_currency
+    )
+
+    # Gợi ý đánh giá brand
+    brand_eval["Nên tiếp tục collab?"] = brand_eval["Điểm đánh giá (0-6)"].apply(
         lambda x: "✅ Có" if x >= 3 else "❌ Không"
     )
 
-    return (df_result_new, brand_eval, brand_eval_1)
+    return (df_result_new, brand_eval)
 
 
 import io
@@ -284,14 +266,12 @@ if process_btn:
             df = pd.read_excel(df)
 
             # Xử lý dữ liệu
-            df_result_new, brand_eval, brand_eval_1 = process_tiktok_daily_report(
-                df_brands, df
-            )
+            df_result_new, brand_eval = process_tiktok_daily_report(df_brands, df)
 
             # Lưu vào session
             st.session_state["df_result_new"] = df_result_new
             st.session_state["brand_eval"] = brand_eval
-            st.session_state["brand_eval_1"] = brand_eval_1
+
 
 if "df_result_new" in st.session_state:
     st.dataframe(st.session_state["df_result_new"], use_container_width=True)
@@ -311,8 +291,8 @@ if "df_result_new" in st.session_state:
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )
 
-if "brand_eval_1" in st.session_state:
-    st.dataframe(st.session_state["brand_eval_1"], use_container_width=True)
+if "brand_eval" in st.session_state:
+    st.dataframe(st.session_state["brand_eval"], use_container_width=True)
 
     import io
 

@@ -54,7 +54,7 @@ with col2:
         type=["xlsx", "xls"],
         key="tiktok_income",
     )
-st.markdown("<br><br>", unsafe_allow_html=True)
+
 
 # Khởi tạo trạng thái nếu chưa có
 if "processing" not in st.session_state:
@@ -104,6 +104,9 @@ with st.container():
 if st.button("🔁 Reset 🔁", use_container_width=True):
     st.session_state.clear()
     st.rerun()
+
+
+st.markdown("<br><br>", unsafe_allow_html=True)
 
 
 def process_tiktok_daily_report(df_brands, df):

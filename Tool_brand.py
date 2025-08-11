@@ -295,10 +295,6 @@ if process_btn:
 
 if "df_result_new" in st.session_state:
     st.dataframe(st.session_state["df_result_new"], use_container_width=True)
-
-if "brand_eval" in st.session_state:
-    st.dataframe(st.session_state["brand_eval"], use_container_width=True)
-
     import io
 
     output = io.BytesIO()
@@ -312,5 +308,24 @@ if "brand_eval" in st.session_state:
         label="📥 Tải báo cáo Excel",
         data=processed_data,
         file_name="bao_cao_collab.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
+
+if "brand_eval_1" in st.session_state:
+    st.dataframe(st.session_state["brand_eval_1"], use_container_width=True)
+
+    import io
+
+    output = io.BytesIO()
+    with pd.ExcelWriter(output, engine="xlsxwriter") as writer:
+        st.session_state["brand_eval_1"].to_excel(
+            writer, index=False, sheet_name="Report"
+        )
+    processed_data = output.getvalue()
+
+    st.download_button(
+        label="📥 Tải báo cáo Excel",
+        data=processed_data,
+        file_name="brand_total.xlsx",
         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )

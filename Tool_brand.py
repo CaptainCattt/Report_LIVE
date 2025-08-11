@@ -235,11 +235,6 @@ def process_tiktok_daily_report(df_brands, df):
         format_vn_currency
     )
 
-    # Gợi ý đánh giá brand
-    brand_eval["Nên tiếp tục collab?"] = brand_eval["Điểm đánh giá (0-6)"].apply(
-        lambda x: "✅ Có" if x >= 3 else "❌ Không"
-    )
-
     return (df_result_new, brand_eval)
 
 
